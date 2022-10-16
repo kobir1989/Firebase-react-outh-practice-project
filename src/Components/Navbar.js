@@ -1,6 +1,14 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import AuthContext from "../store/auth-context";
 const Navbar = () => {
+  const navigate = useNavigate();
+  const authCtx = useContext(AuthContext);
+  const auth = authCtx.isLoggedIn;
+  const logoutHandler = () => {
+    authCtx.logout();
+    navigate("/login");
+  };
   return (
     <div
       className="flex justify-between items-center px-8
@@ -13,18 +21,26 @@ const Navbar = () => {
       </div>
       <div>
         <ul className="flex gap-8">
-          <li className="lg:text-[1.2rem] text-[.9rem] font-medium">
-            <Link to="/user-profile">Profile</Link>
-          </li>
-          <li className="lg:text-[1.2rem] text-[.9rem] font-medium">
-            <Link to="/login">Login</Link>
-          </li>
-          <li className="lg:text-[1.2rem] text-[.9rem] font-medium">
-            <Link to="/signin"> Signin</Link>
-          </li>
-          <li className="lg:text-[1.2rem] text-[.9rem] font-medium">
-            <button>Logout</button>
-          </li>
+          {auth && (
+            <li className="lg:text-[1.2rem] text-[.9rem] font-medium">
+              <Link to="/user-profile">Profile</Link>
+            </li>
+          )}
+          {!auth && (
+            <li className="lg:text-[1.2rem] text-[.9rem] font-medium">
+              <Link to="/login">Login</Link>
+            </li>
+          )}
+          {!auth && (
+            <li className="lg:text-[1.2rem] text-[.9rem] font-medium">
+              <Link to="/signin"> Signin</Link>
+            </li>
+          )}
+          {auth && (
+            <li className="lg:text-[1.2rem] text-[.9rem] font-medium">
+              <button onClick={logoutHandler}>Logout</button>
+            </li>
+          )}
         </ul>
       </div>
     </div>

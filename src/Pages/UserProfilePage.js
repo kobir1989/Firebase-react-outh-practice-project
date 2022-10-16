@@ -1,6 +1,7 @@
 import React from "react";
 import PasswordReset from "../Components/PasswordReset";
 import Navbar from "../Components/Navbar";
+
 const UserProfilePage = () => {
   return (
     <>
