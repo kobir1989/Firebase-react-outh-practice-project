@@ -33,7 +33,8 @@ const LoginPage = () => {
         return res.json();
       })
       .then((data) => {
-        authCtx.login(data.idToken);
+        const expireInTime = new Date(new Date().getTime() + +data.expiresIn * 1000);
+        authCtx.login(data.idToken, expireInTime.toISOString());
       });
   };
   return (
@@ -46,13 +47,8 @@ const LoginPage = () => {
         <div>
           <h2 className=" text-[#251B37] mt-8 text-[1.5rem]">Login</h2>
         </div>
-        <form
-          className="flex flex-col items-start w-11/12 p-12 mx-auto"
-          onSubmit={formSubmitHandler}
-        >
-          <label className="ml-[.2rem] text-[#251B37] text-[1.1rem] mb-1">
-            Email or Phone Number
-          </label>
+        <form className="flex flex-col items-start w-11/12 p-12 mx-auto" onSubmit={formSubmitHandler}>
+          <label className="ml-[.2rem] text-[#251B37] text-[1.1rem] mb-1">Email or Phone Number</label>
           <input
             className="outline-0 w-full h-[3rem] mb-6 pl-4 rounded-md w-full 
           h-[3rem] mb-6 pl-4 rounded-md  border-[1px] border-gray"
@@ -61,9 +57,7 @@ const LoginPage = () => {
             ref={emailInputRef}
           />
 
-          <label className="ml-[.2rem] text-[#251B37] text-[1.1rem] mb-1">
-            Password
-          </label>
+          <label className="ml-[.2rem] text-[#251B37] text-[1.1rem] mb-1">Password</label>
           <input
             className="outline-0 w-full h-[3rem] mb-6 pl-4 rounded-md w-full
            h-[3rem] mb-6 pl-4 rounded-md  border-[1px] border-gray"
@@ -82,9 +76,7 @@ const LoginPage = () => {
         <p className="text-gray mb-6 text-[.8rem]">
           Don't have and account?
           <Link to="/signin">
-            <span className="border-b border-lightGray pb-1 hover:text-red  mx-2">
-              Sign Up
-            </span>
+            <span className="border-b border-lightGray pb-1 hover:text-red  mx-2">Sign Up</span>
           </Link>
         </p>
       </div>
